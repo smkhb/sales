@@ -2,6 +2,7 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { ClientStatus as Status } from "./enum/status";
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { Optional } from "@/core/types/optional";
+import { ClientCreatedEvent } from "../events/client-created-event";
 
 export interface ClientProps {
   name: string;
@@ -98,6 +99,12 @@ export class Client extends AggregateRoot<ClientProps> {
       },
       ID
     );
+    const isNewClient = !ID; // If no ID is provided, it's a new client
+
+    if (isNewClient) {
+      client.addDomainEvent(new ClientCreatedEvent(client));
+    }
+
     return client;
   }
 }
