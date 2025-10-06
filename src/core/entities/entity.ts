@@ -1,16 +1,16 @@
 import { UniqueEntityID } from './unique-entity-id'
 
 export abstract class Entity<Props> {
-  private _id: UniqueEntityID
+  private _ID: UniqueEntityID
   protected props: Props
 
-  get id() {
-    return this._id
+  get ID() {
+    return this._ID
   }
 
-  protected constructor(props: Props, id?: UniqueEntityID) {
+  protected constructor(props: Props, ID?: UniqueEntityID) {
     this.props = props
-    this._id = id ?? new UniqueEntityID()
+    this._ID = ID ?? new UniqueEntityID()
   }
 
   public equals(entity: Entity<unknown>) {
@@ -18,7 +18,7 @@ export abstract class Entity<Props> {
       return true
     }
 
-    if (entity.id === this._id) {
+    if (entity.ID === this._ID) {
       return true
     }
 
