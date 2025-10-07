@@ -89,7 +89,7 @@ export class Client extends AggregateRoot<ClientProps> {
 
   static create(
     props: Optional<ClientProps, "status" | "createdAt">,
-    ID?: UniqueEntityID
+    id?: UniqueEntityID
   ) {
     const client = new Client(
       {
@@ -97,9 +97,9 @@ export class Client extends AggregateRoot<ClientProps> {
         status: props.status ?? Status.lead,
         createdAt: props.createdAt ?? new Date(),
       },
-      ID
+      id
     );
-    const isNewClient = !ID; // If no ID is provided, it's a new client
+    const isNewClient = !id; // If no id is provided, it's a new client
 
     if (isNewClient) {
       client.addDomainEvent(new ClientCreatedEvent(client));

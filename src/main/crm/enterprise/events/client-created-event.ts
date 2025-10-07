@@ -12,6 +12,6 @@ export class ClientCreatedEvent implements DomainEvent {
   }
 
   getAggregateID(): UniqueEntityID {
-    return this.client.ID;
+    return this.client.id;
   }
 }

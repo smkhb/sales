@@ -11,7 +11,7 @@ export class DomainEvents {
   public static shouldRun = true;
 
   public static markAggregateForDispatch(aggregate: AggregateRoot<unknown>) {
-    const aggregateFound = !!this.findMarkedAggregateByID(aggregate.ID);
+    const aggregateFound = !!this.findMarkedAggregateByID(aggregate.id);
 
     if (!aggregateFound) {
       this.markedAggregates.push(aggregate);
@@ -35,7 +35,7 @@ export class DomainEvents {
   private static findMarkedAggregateByID(
     id: UniqueEntityID
   ): AggregateRoot<unknown> | undefined {
-    return this.markedAggregates.find((aggregate) => aggregate.ID.equals(id));
+    return this.markedAggregates.find((aggregate) => aggregate.id.equals(id));
   }
 
   public static dispatchEventsForAggregate(id: UniqueEntityID) {

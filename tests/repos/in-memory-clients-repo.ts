@@ -8,29 +8,29 @@ export class InMemoryClientsRepo implements ClientsRepo {
   async create(client: Client) {
     this.items.push(client);
 
-    DomainEvents.dispatchEventsForAggregate(client.ID);
+    DomainEvents.dispatchEventsForAggregate(client.id);
   }
 
   async save(client: Client) {
     const clientIndex = this.items.findIndex((item) =>
-      item.ID.equals(client.ID)
+      item.id.equals(client.id)
     );
 
     this.items[clientIndex] = client;
 
-    DomainEvents.dispatchEventsForAggregate(client.ID);
+    DomainEvents.dispatchEventsForAggregate(client.id);
   }
 
   async delete(client: Client) {
     const clientIndex = this.items.findIndex((item) =>
-      item.ID.equals(client.ID)
+      item.id.equals(client.id)
     );
 
     this.items.splice(clientIndex, 1);
   }
 
-  async findByID(ID: string) {
-    const client = this.items.find((item) => item.ID.toString() === ID);
+  async findByID(id: string) {
+    const client = this.items.find((item) => item.id.toString() === id);
 
     if (!client) {
       return null;
@@ -49,9 +49,9 @@ export class InMemoryClientsRepo implements ClientsRepo {
     return client;
   }
 
-  async findBySalesRepID(salesRepID: string) {
+  async findBySalesRepID(salesRepid: string) {
     const clients = this.items.filter(
-      (item) => item.salesRepID.toString() === salesRepID
+      (item) => item.salesRepID.toString() === salesRepid
     );
 
     return clients;
