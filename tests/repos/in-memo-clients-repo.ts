@@ -2,7 +2,7 @@ import { DomainEvents } from "@/core/events/domain-events";
 import { ClientsRepo } from "@/main/crm/app/repos/clients-repo";
 import { Client } from "@/main/crm/enterprise/entities/client";
 
-export class InMemoryClientsRepo implements ClientsRepo {
+export class InMemoClientsRepo implements ClientsRepo {
   public items: Client[] = [];
 
   async create(client: Client) {
