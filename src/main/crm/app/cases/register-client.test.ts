@@ -2,7 +2,7 @@ import { InMemoClientsRepo } from "tests/repos/in-memo-clients-repo";
 import { RegisterClientUseCase } from "./register-client";
 import { Client } from "../../enterprise/entities/client";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { ClientAlreadyExists } from "@/core/errors/errors/client-already-exists";
+import { ClientAlreadyExistsError } from "@/core/errors/errors/client-already-exists-error";
 import { DomainEvents } from "@/core/events/domain-events";
 
 let clientsRepo: InMemoClientsRepo;
@@ -54,7 +54,7 @@ describe("Register Client", () => {
     });
 
     expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(ClientAlreadyExists);
+    expect(result.value).toBeInstanceOf(ClientAlreadyExistsError);
     expect(clientsRepo.items).toHaveLength(1);
   });
 });

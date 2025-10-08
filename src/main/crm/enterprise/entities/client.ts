@@ -77,12 +77,12 @@ export class Client extends AggregateRoot<ClientProps> {
     this.touch();
   }
 
-  set updateSegment(segment: string) {
+  public updateSegment(segment: string) {
     this.props.segment = segment;
     this.touch();
   }
 
-  set assignToSalesRep(salesRepID: UniqueEntityID) {
+  public updateSalesRepID(salesRepID: UniqueEntityID) {
     this.props.salesRepID = salesRepID;
     this.touch();
   }

@@ -1,6 +1,6 @@
 import { Either, left, right } from "@/core/either";
 import { ClientsRepo } from "../repos/clients-repo";
-import { ClientAlreadyExists } from "@/core/errors/errors/client-already-exists";
+import { ClientAlreadyExistsError } from "@/core/errors/errors/client-already-exists-error";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Client } from "../../enterprise/entities/client";
 import { DomainEvents } from "@/core/events/domain-events";
@@ -14,7 +14,7 @@ interface RegisterClientUseCaseRequest {
 }
 
 type RegisterClientUseCaseResponse = Either<
-  ClientAlreadyExists,
+  ClientAlreadyExistsError,
   { client: Client }
 >;
 
@@ -31,7 +31,7 @@ export class RegisterClientUseCase {
     const clientExist = await this.clientsRepo.findByEmail(email);
 
     if (clientExist) {
-      return left(new ClientAlreadyExists(email));
+      return left(new ClientAlreadyExistsError(email));
     }
 
     const client = Client.create({
