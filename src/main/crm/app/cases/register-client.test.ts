@@ -3,6 +3,7 @@ import { RegisterClientUseCase } from "./register-client";
 import { Client } from "../../enterprise/entities/client";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { ClientAlreadyExists } from "@/core/errors/errors/client-already-exists";
+import { DomainEvents } from "@/core/events/domain-events";
 
 let clientsRepo: InMemoClientsRepo;
 let sut: RegisterClientUseCase;
@@ -11,6 +12,7 @@ describe("Register Client", () => {
   beforeEach(() => {
     clientsRepo = new InMemoClientsRepo();
     sut = new RegisterClientUseCase(clientsRepo);
+    DomainEvents.clearHandlers();
   });
 
   it("should be able to register a new client", async () => {
@@ -29,6 +31,7 @@ describe("Register Client", () => {
         email: "johndoe@example.com",
       })
     );
+    expect(clientsRepo.items).toHaveLength(1);
   });
 
   it("should not be able to register a new client with the same email", async () => {
@@ -52,5 +55,6 @@ describe("Register Client", () => {
 
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(ClientAlreadyExists);
+    expect(clientsRepo.items).toHaveLength(1);
   });
 });
