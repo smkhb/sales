@@ -1,4 +1,3 @@
-import { DomainEvents } from "@/core/events/domain-events";
 import { ClientsRepo } from "@/main/crm/app/repos/clients-repo";
 import { Client } from "@/main/crm/enterprise/entities/client";
 
@@ -7,8 +6,6 @@ export class InMemoClientsRepo implements ClientsRepo {
 
   async create(client: Client) {
     this.items.push(client);
-
-    DomainEvents.dispatchEventsForAggregate(client.id);
   }
 
   async save(client: Client) {
@@ -16,9 +13,11 @@ export class InMemoClientsRepo implements ClientsRepo {
       item.id.equals(client.id)
     );
 
-    this.items[clientIndex] = client;
+    if (clientIndex < 0) {
+      throw new Error("Client not found"); // TODO: create a specific error
+    }
 
-    DomainEvents.dispatchEventsForAggregate(client.id);
+    this.items[clientIndex] = client;
   }
 
   async delete(client: Client) {

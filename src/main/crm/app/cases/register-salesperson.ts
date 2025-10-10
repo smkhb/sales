@@ -17,7 +17,7 @@ type RegisterSalespersonUseCaseResponse = Either<
   { salesPerson: Salesperson }
 >;
 
-export class RegisterSalesPersonUseCase {
+export class RegisterSalespersonUseCase {
   constructor(
     private salespersonsRepo: SalespersonsRepo,
     private hashGenerator: HashGenerator

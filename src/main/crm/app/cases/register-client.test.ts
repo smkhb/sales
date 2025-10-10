@@ -34,7 +34,7 @@ describe("Register Client", () => {
     expect(clientsRepo.items).toHaveLength(1);
   });
 
-  it("should not be able to register a new client with the same email", async () => {
+  it("should not be able to register a new client with an existing email", async () => {
     const client = Client.create({
       name: "John Doe",
       email: "johndoe@example.com",
