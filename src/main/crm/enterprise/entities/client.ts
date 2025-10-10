@@ -90,7 +90,7 @@ export class Client extends AggregateRoot<ClientProps> {
   static create(
     props: Optional<ClientProps, "status" | "createdAt">,
     id?: UniqueEntityID
-  ) {
+  ): Client {
     const client = new Client(
       {
         ...props,
