@@ -1,13 +1,13 @@
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
-import { SalesPersonEvent } from "../events/sales-person-created-event";
+import { SalesPersonEvent } from "../events/salesperson-created-event";
 import { SalesPersonRole } from "./enum/role";
 
-export interface SalesPersonProps {
+export interface SalespersonProps {
   name: string;
   email: string;
-  password: string; // Hashed password
+  passwordHash: string; // Hashed password
   phone: string;
   role: SalesPersonRole;
   isActive: boolean;
@@ -15,7 +15,7 @@ export interface SalesPersonProps {
   updatedAt?: Date | null;
 }
 
-export class SalesPerson extends AggregateRoot<SalesPersonProps> {
+export class Salesperson extends AggregateRoot<SalespersonProps> {
   get name() {
     return this.props.name;
   }
@@ -24,8 +24,8 @@ export class SalesPerson extends AggregateRoot<SalesPersonProps> {
     return this.props.email;
   }
 
-  get password() {
-    return this.props.password;
+  get passwordHash() {
+    return this.props.passwordHash;
   }
 
   get phone() {
@@ -63,7 +63,7 @@ export class SalesPerson extends AggregateRoot<SalesPersonProps> {
   }
 
   public updatePasswordHash(passwordHash: string) {
-    this.props.password = passwordHash;
+    this.props.passwordHash = passwordHash;
     this.touch();
   }
 
@@ -88,10 +88,10 @@ export class SalesPerson extends AggregateRoot<SalesPersonProps> {
   }
 
   static create(
-    props: Optional<SalesPersonProps, "createdAt" | "role" | "isActive">,
+    props: Optional<SalespersonProps, "createdAt" | "role" | "isActive">,
     id?: UniqueEntityID
-  ): SalesPerson {
-    const salesPerson = new SalesPerson(
+  ): Salesperson {
+    const salesPerson = new Salesperson(
       {
         ...props,
         role: props.role ?? SalesPersonRole.salesPerson,

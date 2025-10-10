@@ -1,12 +1,12 @@
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { DomainEvent } from "@/core/events/domain-event";
-import { SalesPerson } from "../entities/sales-person";
+import { Salesperson } from "../entities/salesperson";
 
 export class SalesPersonEvent implements DomainEvent {
   public ocurredAt: Date;
-  private readonly salesPerson: SalesPerson;
+  private readonly salesPerson: Salesperson;
 
-  constructor(salesPerson: SalesPerson) {
+  constructor(salesPerson: Salesperson) {
     this.ocurredAt = new Date();
     this.salesPerson = salesPerson;
   }
