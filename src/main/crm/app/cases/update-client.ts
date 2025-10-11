@@ -2,9 +2,9 @@ import { Either, left, right } from "@/core/either";
 import { Client } from "../../enterprise/entities/client";
 import { ClientsRepo } from "../repos/clients-repo";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
-import { ClientAlreadyExistsError } from "@/core/errors/errors/client-already-exists-error";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { DomainEvents } from "@/core/events/domain-events";
+import { ClientAlreadyExistsError } from "./errors/client-already-exists-error";
 
 interface UpdateClientUseCaseRequest {
   clientID: string;

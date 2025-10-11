@@ -3,7 +3,7 @@ import { RegisterSalespersonUseCase } from "./register-salesperson";
 import { FakeHasher } from "tests/encryptography/fake-hasher";
 import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
 import { Salesperson } from "../../enterprise/entities/salesperson";
-import { SalespersonAlreadyExistsError } from "@/core/errors/errors/salesperson-already-exists-error";
+import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
 
 let salespersonsRepo: InMemoSalespersonsRepo;
 let fakeHasher: FakeHasher;

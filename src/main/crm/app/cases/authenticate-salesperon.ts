@@ -3,7 +3,7 @@ import { SalespersonsRepo } from "../repos/salespersons-repo";
 import { HashComparer } from "../cryptography/hash-comparer";
 import { Encrypter } from "../cryptography/encrypter";
 import { WrongCredentialsError } from "@/core/errors/errors/wrong-credentials-error";
-import { SalespersonDeactiveError } from "@/core/errors/errors/salesperson-deactive-error";
+import { SalespersonDeactiveError } from "./errors/salesperson-deactive-error";
 
 interface AuthenticateSalespersonUseCaseRequest {
   email: string;

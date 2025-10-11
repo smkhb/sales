@@ -2,8 +2,8 @@ import { InMemoClientsRepo } from "tests/repos/in-memo-clients-repo";
 import { RegisterClientUseCase } from "./register-client";
 import { Client } from "../../enterprise/entities/client";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { ClientAlreadyExistsError } from "@/core/errors/errors/client-already-exists-error";
 import { DomainEvents } from "@/core/events/domain-events";
+import { ClientAlreadyExistsError } from "./errors/client-already-exists-error";
 
 let clientsRepo: InMemoClientsRepo;
 let sut: RegisterClientUseCase;

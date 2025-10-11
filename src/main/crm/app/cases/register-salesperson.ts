@@ -1,9 +1,9 @@
 import { Either, left, right } from "@/core/either";
 import { Salesperson } from "../../enterprise/entities/salesperson";
-import { SalespersonAlreadyExistsError } from "@/core/errors/errors/salesperson-already-exists-error";
 import { DomainEvents } from "@/core/events/domain-events";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
 import { HashGenerator } from "../cryptography/hash-generator";
+import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
 
 interface RegisterSalespersonUseCaseRequest {
   name: string;
