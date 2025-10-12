@@ -45,8 +45,9 @@ export class AuthenticateSalespersonUseCase {
       return left(new SalespersonDeactiveError());
     }
 
-    const accessToken = await this.encrypter.encrypt({ // TODO: Change to JWT
+    const accessToken = await this.encrypter.encrypt({
       sub: salesperson.id.toString(),
+      role: salesperson.role,
     });
 
     return right({ accessToken });

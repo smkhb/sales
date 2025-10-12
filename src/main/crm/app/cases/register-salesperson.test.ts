@@ -2,8 +2,8 @@ import { DomainEvents } from "@/core/events/domain-events";
 import { RegisterSalespersonUseCase } from "./register-salesperson";
 import { FakeHasher } from "tests/encryptography/fake-hasher";
 import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
-import { Salesperson } from "../../enterprise/entities/salesperson";
 import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
+import { makeSalesperson } from "tests/factories/make-salesperson";
 
 let salespersonsRepo: InMemoSalespersonsRepo;
 let fakeHasher: FakeHasher;
@@ -36,11 +36,9 @@ describe("Register Salesperson", () => {
   });
 
   it("should not be able to register a new salesperson with an existing email", async () => {
-    const salesperson = Salesperson.create({
-      name: "John Doe",
+    const salesperson = makeSalesperson({
       email: "johndoe@example.com",
-      phone: "11999999999",
-      passwordHash: "123456-hashed",
+      passwordHash: await fakeHasher.hash("123456"),
     });
 
     await salespersonsRepo.create(salesperson);
