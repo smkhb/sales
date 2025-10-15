@@ -16,7 +16,7 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [ ] Deve ser possível listar as vendas com endereços de entrega próximo ao local do vendedor.
 
-[ ] Deve ser possível alterar a senha de um usuário (gerentes podem alterar as senhas dos vendedores).
+[ ] Deve ser possível alterar a senha de um usuário (somente gerentes podem alterar as senhas dos vendedores).
 
 [ ] Deve ser possível listar as vendas de um usuário (vendedor).
 
@@ -30,7 +30,7 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [ ] Para marcar uma oportunidade de venda como entregue, é obrigatório o envio de uma foto.
 
-[ ] Somente o vendedor pode alterar a senha de um usuário.
+[ ] Somente o gerente pode alterar a senha de um vendedor.
 
 [ ] Não deve ser possível um vendedor listar as vendas de outro vendedor.
 
