@@ -31,6 +31,8 @@ describe("Register Client", () => {
         email: "johndoe@example.com",
       })
     );
+    expect(clientsRepo.items[0]?.creatorID.toString()).toEqual("sales-rep-id");
+    expect(clientsRepo.items[0]?.salesRepID.toString()).toEqual("sales-rep-id");
     expect(clientsRepo.items).toHaveLength(1);
   });
 

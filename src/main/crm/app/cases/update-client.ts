@@ -5,9 +5,17 @@ import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-e
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { DomainEvents } from "@/core/events/domain-events";
 import { ClientAlreadyExistsError } from "./errors/client-already-exists-error";
+import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
+import { SalespersonsRepo } from "../repos/salespersons-repo";
+import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { ClientNotFoundError } from "./errors/client-not-found-error";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 interface UpdateClientUseCaseRequest {
+  executorID: string;
   clientID: string;
+
+  // Fields that can be updated
   name: string;
   email: string;
   phone: string;
@@ -16,14 +24,22 @@ interface UpdateClientUseCaseRequest {
 }
 
 type UpdateClientUseCaseResponse = Either<
-  ResourceNotFoundError | ClientAlreadyExistsError,
+  | ResourceNotFoundError
+  | ClientAlreadyExistsError
+  | NotAllowedError
+  | ClientNotFoundError
+  | SalespersonNotFoundError,
   { client: Client }
 >;
 
 export class UpdateClientUseCase {
-  constructor(private clientsRepo: ClientsRepo) {}
+  constructor(
+    private salespersonsRepo: SalespersonsRepo,
+    private clientsRepo: ClientsRepo
+  ) {}
 
   async execute({
+    executorID,
     clientID,
     name,
     email,
@@ -31,10 +47,31 @@ export class UpdateClientUseCase {
     segment,
     salesRepID,
   }: UpdateClientUseCaseRequest): Promise<UpdateClientUseCaseResponse> {
+    const executor = await this.salespersonsRepo.findByID(executorID);
+
+    if (!executor) {
+      return left(new ResourceNotFoundError());
+    }
+
     const client = await this.clientsRepo.findByID(clientID);
 
     if (!client) {
-      return left(new ResourceNotFoundError());
+      return left(new ClientNotFoundError());
+    }
+
+    const doesNewSalesRepExists = await this.salespersonsRepo.findByID(
+      salesRepID
+    );
+
+    if (!doesNewSalesRepExists) {
+      return left(new SalespersonNotFoundError());
+    }
+
+    if (
+      executor.role !== SalespersonRole.manager &&
+      executor.id.toString() !== client.salesRepID.toString()
+    ) {
+      return left(new NotAllowedError());
     }
 
     const clientWithSameEmail = await this.clientsRepo.findByEmail(email);

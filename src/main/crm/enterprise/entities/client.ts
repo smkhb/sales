@@ -5,6 +5,7 @@ import { Optional } from "@/core/types/optional";
 import { ClientCreatedEvent } from "../events/client-created-event";
 
 export interface ClientProps {
+  creatorID: UniqueEntityID;
   name: string;
   email: string;
   phone: string;
@@ -16,6 +17,10 @@ export interface ClientProps {
 }
 
 export class Client extends AggregateRoot<ClientProps> {
+  get creatorID() {
+    return this.props.creatorID;
+  }
+
   get name() {
     return this.props.name;
   }
@@ -88,12 +93,13 @@ export class Client extends AggregateRoot<ClientProps> {
   }
 
   static create(
-    props: Optional<ClientProps, "status" | "createdAt">,
+    props: Optional<ClientProps, "creatorID" | "status" | "createdAt">,
     id?: UniqueEntityID
   ): Client {
     const client = new Client(
       {
         ...props,
+        creatorID: props.creatorID ?? props.salesRepID,
         status: props.status ?? Status.lead,
         createdAt: props.createdAt ?? new Date(),
       },

@@ -22,6 +22,7 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [ ] Deve ser possível notificar o gerente a cada alteração no status de uma venda de alto valor.
 
+
 ## 📑 Regras de negócio
 
 [ ] Somente usuário do tipo gerente pode realizar operações de CRUD nos vendedores.
@@ -33,6 +34,11 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 [ ] Somente o gerente pode alterar a senha de um vendedor.
 
 [ ] Não deve ser possível um vendedor listar as vendas de outro vendedor.
+
+[ ] Todo cliente deve ter um vendedor associado.
+
+[ ] O primeiro vendedor associado do Cliente deve ser o vendedor que o criou.
+
 
 ## ✏️ Conceitos que pode praticar
 
