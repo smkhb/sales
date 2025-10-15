@@ -14,7 +14,7 @@ interface RegisterSalespersonUseCaseRequest {
 
 type RegisterSalespersonUseCaseResponse = Either<
   SalespersonAlreadyExistsError,
-  { salesPerson: Salesperson }
+  { salesperson: Salesperson }
 >;
 
 export class RegisterSalespersonUseCase {
@@ -37,17 +37,17 @@ export class RegisterSalespersonUseCase {
 
     const passwordHash = await this.hashGenerator.hash(password);
 
-    const salesPerson = Salesperson.create({
+    const salesperson = Salesperson.create({
       name,
       email,
       passwordHash,
       phone,
     });
 
-    await this.salespersonsRepo.create(salesPerson);
+    await this.salespersonsRepo.create(salesperson);
 
-    DomainEvents.dispatchEventsForAggregate(salesPerson.id);
+    DomainEvents.dispatchEventsForAggregate(salesperson.id);
 
-    return right({ salesPerson });
+    return right({ salesperson });
   }
 }
