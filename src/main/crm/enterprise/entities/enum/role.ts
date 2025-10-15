@@ -1,4 +1,4 @@
-export enum SalesPersonRole {
-  salesPerson = "salesPerson",
-  salesManager = "salesManager",
+export enum SalespersonRole {
+  saleperson = "salesperson",
+  manager = "manager",
 }

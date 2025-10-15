@@ -53,6 +53,6 @@ export class UpdateClientUseCase {
 
     DomainEvents.dispatchEventsForAggregate(client.id);
 
-    return right({ client });
+    return right({ client: client });
   }
 }

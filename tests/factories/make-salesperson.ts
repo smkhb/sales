@@ -1,5 +1,5 @@
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { SalesPersonRole } from "@/main/crm/enterprise/entities/enum/role";
+import { SalespersonRole } from "@/main/crm/enterprise/entities/enum/role";
 import {
   Salesperson,
   SalespersonProps,
@@ -17,7 +17,7 @@ export function makeSalesperson(
       phone: faker.phone.number(),
       passwordHash: faker.internet.password(),
       
-      role: SalesPersonRole.salesPerson,
+      role: SalespersonRole.saleperson,
       isActive: true,
       
       ...override,

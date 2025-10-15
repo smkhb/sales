@@ -2,14 +2,14 @@ import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 import { SalesPersonEvent } from "../events/salesperson-created-event";
-import { SalesPersonRole } from "./enum/role";
+import { SalespersonRole } from "./enum/role";
 
 export interface SalespersonProps {
   name: string;
   email: string;
   passwordHash: string; // Hashed password
   phone: string;
-  role: SalesPersonRole;
+  role: SalespersonRole;
   isActive: boolean;
   createdAt: Date;
   updatedAt?: Date | null;
@@ -72,7 +72,7 @@ export class Salesperson extends AggregateRoot<SalespersonProps> {
     this.touch();
   }
 
-  public updateRole(role: SalesPersonRole) {
+  public updateRole(role: SalespersonRole) {
     this.props.role = role;
     this.touch();
   }
@@ -94,7 +94,7 @@ export class Salesperson extends AggregateRoot<SalespersonProps> {
     const salesPerson = new Salesperson(
       {
         ...props,
-        role: props.role ?? SalesPersonRole.salesPerson,
+        role: props.role ?? SalespersonRole.saleperson,
         isActive: props.isActive ?? true,
         createdAt: props.createdAt ?? new Date(),
       },
