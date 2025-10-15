@@ -4,6 +4,7 @@ import { HashComparer } from "../cryptography/hash-comparer";
 import { Encrypter } from "../cryptography/encrypter";
 import { WrongCredentialsError } from "@/core/errors/errors/wrong-credentials-error";
 import { SalespersonDeactiveError } from "./errors/salesperson-deactive-error";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 interface AuthenticateSalespersonUseCaseRequest {
   email: string;
@@ -11,7 +12,7 @@ interface AuthenticateSalespersonUseCaseRequest {
 }
 
 type AuthenticateSalespersonUseCaseResponse = Either<
-  WrongCredentialsError | SalespersonDeactiveError,
+  WrongCredentialsError | SalespersonDeactiveError | SalespersonNotFoundError,
   { accessToken: string }
 >;
 
@@ -29,7 +30,7 @@ export class AuthenticateSalespersonUseCase {
     const salesperson = await this.salespersonsRepo.findByEmail(email);
 
     if (!salesperson) {
-      return left(new WrongCredentialsError());
+      return left(new SalespersonNotFoundError());
     }
 
     const doesPasswordMatch = await this.hashComparer.compare(

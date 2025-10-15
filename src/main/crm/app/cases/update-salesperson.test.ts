@@ -1,12 +1,12 @@
 import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
 import { UpdateSalespersonUseCase } from "./update-salesperson";
-import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
 import { DomainEvents } from "@/core/events/domain-events";
 import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
 import { makeSalesperson } from "tests/factories/make-salesperson";
 import { FakeHasher } from "tests/encryptography/fake-hasher";
 import { SalespersonRole } from "../../enterprise/entities/enum/role";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 let salespersonsRepo: InMemoSalespersonsRepo;
 let fakeHasher: FakeHasher;
@@ -72,7 +72,7 @@ describe("Update Salesperson", () => {
     });
 
     expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(ResourceNotFoundError);
+    expect(result.value).toBeInstanceOf(SalespersonNotFoundError);
   });
 
   it("should not be able to update a salesperson email to an already registered salesperson", async () => {

@@ -5,7 +5,7 @@ import { Client } from "../../enterprise/entities/client";
 import { DomainEvents } from "@/core/events/domain-events";
 import { ClientAlreadyExistsError } from "./errors/client-already-exists-error";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
-import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 interface RegisterClientUseCaseRequest {
   executorID: string;
@@ -18,7 +18,7 @@ interface RegisterClientUseCaseRequest {
 }
 
 type RegisterClientUseCaseResponse = Either<
-  ClientAlreadyExistsError | ResourceNotFoundError,
+  ClientAlreadyExistsError | SalespersonNotFoundError,
   { client: Client }
 >;
 
@@ -39,7 +39,7 @@ export class RegisterClientUseCase {
     const executor = await this.salespersonsRepo.findByID(executorID);
 
     if (!executor) {
-      return left(new ResourceNotFoundError());
+      return left(new SalespersonNotFoundError());
     }
 
     const doescClientExist = await this.clientsRepo.findByEmail(email);

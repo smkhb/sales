@@ -1,12 +1,12 @@
 import { Either, left, right } from "@/core/either";
 import { Client } from "../../enterprise/entities/client";
 import { ClientsRepo } from "../repos/clients-repo";
-import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
 import { DomainEvents } from "@/core/events/domain-events";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
 import { SalespersonRole } from "../../enterprise/entities/enum/role";
 import { ClientNotFoundError } from "./errors/client-not-found-error";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 interface InactivateClientUseCaseRequest {
   executorID: string;
@@ -14,7 +14,7 @@ interface InactivateClientUseCaseRequest {
 }
 
 type InactivateClientUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError | ClientNotFoundError,
+  SalespersonNotFoundError | NotAllowedError | ClientNotFoundError,
   { client: Client }
 >;
 
@@ -31,7 +31,7 @@ export class InactivateClientUseCase {
     const executor = await this.salespersonsRepo.findByID(executorID);
 
     if (!executor) {
-      return left(new ResourceNotFoundError());
+      return left(new SalespersonNotFoundError());
     }
 
     const client = await this.clientsRepo.findByID(clientID);

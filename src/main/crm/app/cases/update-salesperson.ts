@@ -1,11 +1,11 @@
 import { Either, left, right } from "@/core/either";
-import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
 import { Salesperson } from "../../enterprise/entities/salesperson";
 import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
 import { SalespersonRole } from "../../enterprise/entities/enum/role";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { DomainEvents } from "@/core/events/domain-events";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 interface UpdateSalespersonUseCaseRequest {
   executorRole: SalespersonRole;
@@ -19,7 +19,7 @@ interface UpdateSalespersonUseCaseRequest {
 }
 
 type UpdateSalespersonUseCaseResponse = Either<
-  ResourceNotFoundError | SalespersonAlreadyExistsError | NotAllowedError,
+  SalespersonNotFoundError | SalespersonAlreadyExistsError | NotAllowedError,
   { salesperson: Salesperson }
 >;
 
@@ -40,7 +40,7 @@ export class UpdateSalespersonUseCase {
     const salesperson = await this.salespersonsRepo.findByID(salespersonID);
 
     if (!salesperson) {
-      return left(new ResourceNotFoundError());
+      return left(new SalespersonNotFoundError());
     }
 
     const salespersonWithSameEmail = await this.salespersonsRepo.findByEmail(

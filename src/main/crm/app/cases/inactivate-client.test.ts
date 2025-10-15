@@ -7,6 +7,7 @@ import { ClientNotFoundError } from "./errors/client-not-found-error";
 import { SalespersonRole } from "../../enterprise/entities/enum/role";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { InactivateClientUseCase } from "./inactivate-client";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 let clientsRepo: InMemoClientsRepo;
 let salespersonsRepo: InMemoSalespersonsRepo;
@@ -93,5 +94,21 @@ describe("Inactivate Client", () => {
 
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(ClientNotFoundError);
+  });
+
+  it("should not be able to inactivate a client if the executor is non existing", async () => {
+    const salesRep = makeSalesperson();
+    salespersonsRepo.items.push(salesRep);
+
+    const client = makeClient({ salesRepID: salesRep.id });
+    clientsRepo.items.push(client);
+
+    const result = await sut.execute({
+      executorID: "non-existing-salesperson-id",
+      clientID: client.id.toString(),
+    });
+
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(SalespersonNotFoundError);
   });
 });

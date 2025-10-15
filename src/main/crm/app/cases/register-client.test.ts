@@ -5,7 +5,7 @@ import { ClientAlreadyExistsError } from "./errors/client-already-exists-error";
 import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
 import { makeSalesperson } from "tests/factories/make-salesperson";
 import { makeClient } from "tests/factories/make-client";
-import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 let clientsRepo: InMemoClientsRepo;
 let salespersonsRepo: InMemoSalespersonsRepo;
@@ -80,6 +80,6 @@ describe("Register Client", () => {
     });
 
     expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(ResourceNotFoundError);
+    expect(result.value).toBeInstanceOf(SalespersonNotFoundError);
   });
 });

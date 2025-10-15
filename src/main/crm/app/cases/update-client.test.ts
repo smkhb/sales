@@ -169,4 +169,26 @@ describe("Update Client", () => {
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(SalespersonNotFoundError);
   });
+
+  it("should not be able to update a client if the executor does not exists", async () => {
+    const salesRep = makeSalesperson();
+    salespersonsRepo.items.push(salesRep);
+
+    const client = makeClient({ salesRepID: salesRep.id });
+    clientsRepo.items.push(client);
+
+    const result = await sut.execute({
+      executorID: "non-existing-executor-id",
+      clientID: client.id.toString(),
+      name: "New Name",
+      email: "new@example.com",
+      phone: "11988888888",
+      segment: "New Segment",
+      salesRepID: salesRep.id.toString(),
+    });
+
+    
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(SalespersonNotFoundError);
+  });
 });

@@ -6,7 +6,7 @@ import { HashGenerator } from "../cryptography/hash-generator";
 import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
 import { SalespersonRole } from "../../enterprise/entities/enum/role";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
-import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 interface RegisterSalespersonUseCaseRequest {
   executorID: string;
@@ -17,7 +17,7 @@ interface RegisterSalespersonUseCaseRequest {
 }
 
 type RegisterSalespersonUseCaseResponse = Either<
-  SalespersonAlreadyExistsError | NotAllowedError | ResourceNotFoundError,
+  SalespersonAlreadyExistsError | NotAllowedError | SalespersonNotFoundError,
   { salesperson: Salesperson }
 >;
 
@@ -37,7 +37,7 @@ export class RegisterSalespersonUseCase {
     const executor = await this.salespersonsRepo.findByID(executorID);
 
     if (!executor) {
-      return left(new ResourceNotFoundError());
+      return left(new SalespersonNotFoundError());
     }
 
     if (executor.role !== SalespersonRole.manager) {

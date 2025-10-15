@@ -6,7 +6,7 @@ import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exis
 import { makeSalesperson } from "tests/factories/make-salesperson";
 import { SalespersonRole } from "../../enterprise/entities/enum/role";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
-import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 let salespersonsRepo: InMemoSalespersonsRepo;
 let fakeHasher: FakeHasher;
@@ -88,6 +88,6 @@ describe("Register Salesperson", () => {
     });
 
     expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(ResourceNotFoundError);
+    expect(result.value).toBeInstanceOf(SalespersonNotFoundError);
   });
 });
