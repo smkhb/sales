@@ -15,6 +15,7 @@ interface UpdateSalespersonUseCaseRequest {
   name: string;
   email: string;
   phone: string;
+  role: SalespersonRole;
 }
 
 type UpdateSalespersonUseCaseResponse = Either<
@@ -56,6 +57,7 @@ export class UpdateSalespersonUseCase {
     salesperson.updateName(name);
     salesperson.updateEmail(email);
     salesperson.updatePhone(phone);
+    salesperson.updateRole(executorRole);
 
     await this.salespersonsRepo.save(salesperson);
 
