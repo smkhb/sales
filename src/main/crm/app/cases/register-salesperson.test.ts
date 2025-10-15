@@ -4,6 +4,9 @@ import { FakeHasher } from "tests/encryptography/fake-hasher";
 import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
 import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
 import { makeSalesperson } from "tests/factories/make-salesperson";
+import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
+import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
 
 let salespersonsRepo: InMemoSalespersonsRepo;
 let fakeHasher: FakeHasher;
@@ -17,8 +20,12 @@ describe("Register Salesperson", () => {
     DomainEvents.clearHandlers();
   });
 
-  it("should be able to register a salesperson ", async () => {
+  it("should be able to register a salesperson if the executor is manager", async () => {
+    const manager = makeSalesperson({ role: SalespersonRole.manager });
+    await salespersonsRepo.create(manager);
+
     const result = await sut.execute({
+      executorID: manager.id.toString(),
       name: "John Doe",
       email: "johndoe@example.com",
       phone: "11999999999",
@@ -26,24 +33,24 @@ describe("Register Salesperson", () => {
     });
 
     expect(result.isRight()).toBe(true);
-    expect(salespersonsRepo.items[0]).toEqual(
+    expect(salespersonsRepo.items[1]).toEqual(
       expect.objectContaining({
         name: "John Doe",
         email: "johndoe@example.com",
       })
     );
-    expect(salespersonsRepo.items).toHaveLength(1);
   });
 
   it("should not be able to register a new salesperson with an existing email", async () => {
-    const salesperson = makeSalesperson({
+    const manager = makeSalesperson({
       email: "johndoe@example.com",
       passwordHash: await fakeHasher.hash("123456"),
+      role: SalespersonRole.manager,
     });
-
-    await salespersonsRepo.create(salesperson);
+    await salespersonsRepo.create(manager);
 
     const result = await sut.execute({
+      executorID: manager.id.toString(),
       name: "John Doe",
       email: "johndoe@example.com",
       phone: "11999999999",
@@ -53,5 +60,34 @@ describe("Register Salesperson", () => {
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(SalespersonAlreadyExistsError);
     expect(salespersonsRepo.items).toHaveLength(1);
+  });
+
+  it("should not be able to register a salesperson if the executor is not a manager", async () => {
+    const salesperson = makeSalesperson({ role: SalespersonRole.saleperson });
+    await salespersonsRepo.create(salesperson);
+
+    const result = await sut.execute({
+      executorID: salesperson.id.toString(),
+      name: "John Doe",
+      email: "johndoe@example.com",
+      phone: "11999999999",
+      password: "123456",
+    });
+
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+
+  it("should not be able to register a new salesperson without an existing executorID", async () => {
+    const result = await sut.execute({
+      executorID: "non-existing-executor-id",
+      name: "John Doe",
+      email: "johndoe@example.com",
+      phone: "11999999999",
+      password: "123456",
+    });
+
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError);
   });
 });

@@ -4,8 +4,12 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Client } from "../../enterprise/entities/client";
 import { DomainEvents } from "@/core/events/domain-events";
 import { ClientAlreadyExistsError } from "./errors/client-already-exists-error";
+import { SalespersonsRepo } from "../repos/salespersons-repo";
+import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
 
 interface RegisterClientUseCaseRequest {
+  executorID: string;
+
   name: string;
   email: string;
   phone: string;
@@ -14,23 +18,33 @@ interface RegisterClientUseCaseRequest {
 }
 
 type RegisterClientUseCaseResponse = Either<
-  ClientAlreadyExistsError,
+  ClientAlreadyExistsError | ResourceNotFoundError,
   { client: Client }
 >;
 
 export class RegisterClientUseCase {
-  constructor(private clientsRepo: ClientsRepo) {}
+  constructor(
+    private clientsRepo: ClientsRepo,
+    private salespersonsRepo: SalespersonsRepo
+  ) {}
 
   async execute({
+    executorID,
     name,
     email,
     phone,
     segment,
     salesRepID,
   }: RegisterClientUseCaseRequest): Promise<RegisterClientUseCaseResponse> {
-    const clientExist = await this.clientsRepo.findByEmail(email);
+    const executor = await this.salespersonsRepo.findByID(executorID);
 
-    if (clientExist) {
+    if (!executor) {
+      return left(new ResourceNotFoundError());
+    }
+
+    const doescClientExist = await this.clientsRepo.findByEmail(email);
+
+    if (doescClientExist) {
       return left(new ClientAlreadyExistsError(email));
     }
 

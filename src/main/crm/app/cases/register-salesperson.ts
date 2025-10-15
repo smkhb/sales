@@ -4,8 +4,12 @@ import { DomainEvents } from "@/core/events/domain-events";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
 import { HashGenerator } from "../cryptography/hash-generator";
 import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
+import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
+import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
 
 interface RegisterSalespersonUseCaseRequest {
+  executorID: string;
   name: string;
   email: string;
   password: string; // Plain text password
@@ -13,7 +17,7 @@ interface RegisterSalespersonUseCaseRequest {
 }
 
 type RegisterSalespersonUseCaseResponse = Either<
-  SalespersonAlreadyExistsError,
+  SalespersonAlreadyExistsError | NotAllowedError | ResourceNotFoundError,
   { salesperson: Salesperson }
 >;
 
@@ -24,14 +28,25 @@ export class RegisterSalespersonUseCase {
   ) {}
 
   async execute({
+    executorID,
     name,
     email,
     password,
     phone,
   }: RegisterSalespersonUseCaseRequest): Promise<RegisterSalespersonUseCaseResponse> {
-    const salespersonExist = await this.salespersonsRepo.findByEmail(email);
+    const executor = await this.salespersonsRepo.findByID(executorID);
 
-    if (salespersonExist) {
+    if (!executor) {
+      return left(new ResourceNotFoundError());
+    }
+
+    if (executor.role !== SalespersonRole.manager) {
+      return left(new NotAllowedError());
+    }
+
+    const doesSalespersonExist = await this.salespersonsRepo.findByEmail(email);
+
+    if (doesSalespersonExist) {
       return left(new SalespersonAlreadyExistsError(email));
     }
 
