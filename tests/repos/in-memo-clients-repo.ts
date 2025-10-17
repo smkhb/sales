@@ -48,10 +48,10 @@ export class InMemoClientsRepo implements ClientsRepo {
     return client;
   }
 
-  async findBySalesRepID(salesRepid: string) {
-    const clients = this.items.filter(
-      (item) => item.salesRepID.toString() === salesRepid
-    );
+  async findManyBySalesRepID(salesRepID: string, page: number) {
+    const clients = this.items
+      .filter((item) => item.salesRepID.toString() === salesRepID)
+      .slice((page - 1) * 20, page * 20); // assuming 20 items per page
 
     return clients;
   }

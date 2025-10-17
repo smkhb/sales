@@ -7,5 +7,5 @@ export abstract class ClientsRepo {
 
   abstract findByID(id: string): Promise<Client | null>;
   abstract findByEmail(email: string): Promise<Client | null>;
-  abstract findBySalesRepID(salesRepID: string): Promise<Client[]>;
+  abstract findManyBySalesRepID(salesRepID: string, page: number): Promise<Client[]>;
 }

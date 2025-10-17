@@ -4,20 +4,20 @@ import { ClientsRepo } from "../repos/clients-repo";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
 import { SalespersonRole } from "../../enterprise/entities/enum/role";
-import { ClientNotFoundError } from "./errors/client-not-found-error";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
-interface GetClientByIDUseCaseRequest {
+interface FetchClientsUseCaseRequest {
   executorID: string;
-  clientID: string;
+  salesRepID: string;
+  page: number;
 }
 
-type GetClientByIDUseCaseResponse = Either<
-  SalespersonNotFoundError | NotAllowedError | ClientNotFoundError,
-  { client: Client }
+type FetchClientsUseCaseResponse = Either<
+  SalespersonNotFoundError | NotAllowedError,
+  { clients: Client[] }
 >;
 
-export class GetClientByIDUseCase {
+export class FetchClientsUseCase {
   constructor(
     private salespersonsRepo: SalespersonsRepo,
     private clientsRepo: ClientsRepo
@@ -25,27 +25,26 @@ export class GetClientByIDUseCase {
 
   async execute({
     executorID,
-    clientID,
-  }: GetClientByIDUseCaseRequest): Promise<GetClientByIDUseCaseResponse> {
+    salesRepID,
+    page = 1,
+  }: FetchClientsUseCaseRequest): Promise<FetchClientsUseCaseResponse> {
     const executor = await this.salespersonsRepo.findByID(executorID);
 
     if (!executor) {
       return left(new SalespersonNotFoundError());
     }
-
-    const client = await this.clientsRepo.findByID(clientID);
-
-    if (!client) {
-      return left(new ClientNotFoundError());
-    }
-
     if (
       executor.role !== SalespersonRole.manager &&
-      executor.id.toString() !== client.salesRepID.toString()
+      executor.id.toString() !== salesRepID
     ) {
       return left(new NotAllowedError());
     }
+    
+    const clients = await this.clientsRepo.findManyBySalesRepID(
+      salesRepID,
+      page
+    );
 
-    return right({ client });
+    return right({ clients });
   }
 }

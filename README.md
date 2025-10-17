@@ -4,9 +4,9 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 ## 🎯 Objetivos
 
-[ ] A aplicação deve ter dois tipos de usuário, Vendedor e/ou Gerente de Vendas.
+[x] A aplicação deve ter dois tipos de usuário, Vendedor e/ou Gerente de Vendas.
 
-[ ] Deve ser possível realizar login com e-mail e senha.
+[x] Deve ser possível realizar login com e-mail e senha.
 
 [ ] Deve ser possível realizar o CRUD dos vendedores (acessível apenas por gerentes).
 
