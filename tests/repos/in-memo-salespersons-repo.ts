@@ -47,4 +47,10 @@ export class InMemoSalespersonsRepo implements SalespersonsRepo {
 
     return salesperson;
   }
+
+  async findMany(page: number) {
+    const clients = this.items.slice((page - 1) * 20, page * 20); // assuming 20 items per page
+
+    return clients;
+  }
 }

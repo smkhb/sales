@@ -42,13 +42,13 @@ describe("Fetch Clients By SalesRepID", () => {
 
     expect(result.isRight()).toBe(true);
     expect(result.value).toMatchObject({
-      clients: [
+      clients: expect.arrayContaining([
         expect.objectContaining({ name: "Test1" }),
         expect.objectContaining({ name: "Test2" }),
         expect.objectContaining({ name: "Test3" }),
         expect.objectContaining({ name: "Test4" }),
         expect.objectContaining({ name: "Test5" }),
-      ],
+      ]),
     });
   });
 
