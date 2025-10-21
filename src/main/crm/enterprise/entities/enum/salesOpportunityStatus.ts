@@ -1,4 +1,4 @@
-export enum OpportunityStatus {
+export enum SalesOpportunityStatus {
   open = "open",
   inProgress = "in_progress",
   won = "won",
