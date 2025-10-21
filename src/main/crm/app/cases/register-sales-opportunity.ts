@@ -2,7 +2,7 @@ import { Either, left, Left, right } from "@/core/either";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { ClientNotFoundError } from "./errors/client-not-found-error";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
-import { SalesOpportunity } from "../../enterprise/entities/salesOpportunity";
+import { SalesOpportunity } from "../../enterprise/entities/sales-opportunity";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
 import { ClientsRepo } from "../repos/clients-repo";
 import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";

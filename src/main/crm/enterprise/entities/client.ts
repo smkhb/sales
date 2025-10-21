@@ -2,7 +2,7 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { Optional } from "@/core/types/optional";
 import { ClientCreatedEvent } from "../events/client-created-event";
-import { ClientStatus as Status } from "./enum/ClientStatus";
+import { ClientStatus } from "./enum/clientStatus";
 
 export interface ClientProps {
   creatorID: UniqueEntityID;
@@ -10,7 +10,7 @@ export interface ClientProps {
   email: string;
   phone: string;
   segment: string;
-  status: Status;
+  status: ClientStatus;
   salesRepID: UniqueEntityID;
   createdAt: Date;
   updatedAt?: Date | null;
@@ -73,12 +73,12 @@ export class Client extends AggregateRoot<ClientProps> {
   }
 
   public active() {
-    this.props.status = Status.active;
+    this.props.status = ClientStatus.active;
     this.touch();
   }
 
   public inactive() {
-    this.props.status = Status.inactive;
+    this.props.status = ClientStatus.inactive;
     this.touch();
   }
 
@@ -100,7 +100,7 @@ export class Client extends AggregateRoot<ClientProps> {
       {
         ...props,
         creatorID: props.creatorID ?? props.salesRepID,
-        status: props.status ?? Status.lead,
+        status: props.status ?? ClientStatus.lead,
         createdAt: props.createdAt ?? new Date(),
       },
       id
