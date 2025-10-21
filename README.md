@@ -8,9 +8,9 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [x] Deve ser possível realizar login com e-mail e senha.
 
-[ ] Deve ser possível realizar o CRUD dos vendedores (acessível apenas por gerentes).
+[x] Deve ser possível realizar o CRUD dos vendedores (acessível apenas por gerentes).
 
-[ ] Deve ser possível realizar o CRUD dos clientes.
+[x] Deve ser possível realizar o CRUD dos clientes.
 
 [ ] Deve ser possível realizar o CRUD das oportunidades de vendas.
 
@@ -22,23 +22,25 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [ ] Deve ser possível notificar o gerente a cada alteração no status de uma venda de alto valor.
 
-
 ## 📑 Regras de negócio
 
-[ ] Somente usuário do tipo gerente pode realizar operações de CRUD nos vendedores.
+[x] Somente usuário do tipo gerente pode realizar operações de CRUD nos vendedores.
 
-[ ] Somente o vendedor que está logado pode gerenciar seus próprios clientes.
+[x] Somente o vendedor que está logado pode gerenciar seus próprios clientes.
 
 [ ] Para marcar uma oportunidade de venda como entregue, é obrigatório o envio de uma foto.
 
-[ ] Somente o gerente pode alterar a senha de um vendedor.
+[x] Somente o gerente pode alterar a senha de um vendedor.
 
 [ ] Não deve ser possível um vendedor listar as vendas de outro vendedor.
 
-[ ] Todo cliente deve ter um vendedor associado.
+[x] Todo cliente deve ter um vendedor associado.
 
 [ ] O primeiro vendedor associado do Cliente deve ser o vendedor que o criou.
 
+[ ] Toda oportunidade de venda deve estar associada a um cliente e a um vendedor.
+
+[ ] O vendedor que cria a oportunidade de venda é o seu primeiro responsável.
 
 ## ✏️ Conceitos que pode praticar
 
