@@ -6,7 +6,7 @@ import { DomainEvents } from "@/core/events/domain-events";
 import { ClientAlreadyExistsError } from "./errors/client-already-exists-error";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { ClientNotFoundError } from "./errors/client-not-found-error";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 

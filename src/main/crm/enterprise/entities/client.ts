@@ -1,8 +1,8 @@
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { ClientStatus as Status } from "./enum/status";
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { Optional } from "@/core/types/optional";
 import { ClientCreatedEvent } from "../events/client-created-event";
+import { ClientStatus as Status } from "./enum/ClientStatus";
 
 export interface ClientProps {
   creatorID: UniqueEntityID;

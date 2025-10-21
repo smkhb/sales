@@ -2,7 +2,7 @@ import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
 import { DomainEvents } from "@/core/events/domain-events";
 import { makeSalesperson } from "tests/factories/make-salesperson";
 import { FakeHasher } from "tests/encryptography/fake-hasher";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 import { UpdateSalespersonPasswordUseCase } from "./update-salesperson-password";

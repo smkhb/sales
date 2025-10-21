@@ -2,7 +2,7 @@ import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 import { SalesPersonEvent } from "../events/salesperson-created-event";
-import { SalespersonRole } from "./enum/role";
+import { SalespersonRole } from "./enum/salespersonRole";
 
 export interface SalespersonProps {
   name: string;

@@ -3,7 +3,7 @@ import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
 import { makeSalesperson } from "tests/factories/make-salesperson";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { GetSalespersonByIDUseCase } from "./get-salesperson-by-id";
 
 let salespersonsRepo: InMemoSalespersonsRepo;

@@ -2,7 +2,7 @@ import { DomainEvents } from "@/core/events/domain-events";
 import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
 import { makeSalesperson } from "tests/factories/make-salesperson";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { FetchSalespersonUseCase } from "./fetch-salesperson";
 
 let salespersonsRepo: InMemoSalespersonsRepo;

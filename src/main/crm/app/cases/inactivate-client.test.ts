@@ -4,7 +4,7 @@ import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
 import { makeClient } from "tests/factories/make-client";
 import { makeSalesperson } from "tests/factories/make-salesperson";
 import { ClientNotFoundError } from "./errors/client-not-found-error";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { InactivateClientUseCase } from "./inactivate-client";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";

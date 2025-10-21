@@ -7,7 +7,7 @@ import { ClientNotFoundError } from "./errors/client-not-found-error";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { GetClientByIDUseCase } from "./get-client-by-id";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 
 let clientsRepo: InMemoClientsRepo;
 let salespersonsRepo: InMemoSalespersonsRepo;

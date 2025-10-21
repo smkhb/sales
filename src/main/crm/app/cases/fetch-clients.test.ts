@@ -5,7 +5,7 @@ import { makeClient } from "tests/factories/make-client";
 import { makeSalesperson } from "tests/factories/make-salesperson";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { FetchClientsUseCase } from "./fetch-clients";
 
 let clientsRepo: InMemoClientsRepo;

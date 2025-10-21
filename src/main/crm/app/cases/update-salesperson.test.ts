@@ -4,7 +4,7 @@ import { DomainEvents } from "@/core/events/domain-events";
 import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
 import { makeSalesperson } from "tests/factories/make-salesperson";
 import { FakeHasher } from "tests/encryptography/fake-hasher";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
@@ -25,7 +25,7 @@ describe("Update Salesperson", () => {
     const manager = makeSalesperson({
       email: "manager@example.com",
       passwordHash: await fakeHasher.hash("123456"),
-      role: SalespersonRole.manager, //! Ensure the role is 'manager' 
+      role: SalespersonRole.manager, //! Ensure the role is 'manager'
     });
     const salesperson = makeSalesperson({
       email: "salesperson@example.com",

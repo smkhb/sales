@@ -1,7 +1,7 @@
 import { Either, left, right } from "@/core/either";
 import { Salesperson } from "../../enterprise/entities/salesperson";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { DomainEvents } from "@/core/events/domain-events";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";

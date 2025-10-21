@@ -4,7 +4,7 @@ import { FakeHasher } from "tests/encryptography/fake-hasher";
 import { InMemoSalespersonsRepo } from "tests/repos/in-memo-salespersons-repo";
 import { SalespersonAlreadyExistsError } from "./errors/salesperson-already-exists-error";
 import { makeSalesperson } from "tests/factories/make-salesperson";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 

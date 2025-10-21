@@ -3,7 +3,7 @@ import { Client } from "../../enterprise/entities/client";
 import { ClientsRepo } from "../repos/clients-repo";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
-import { SalespersonRole } from "../../enterprise/entities/enum/role";
+import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 
 interface FetchClientsUseCaseRequest {
@@ -39,7 +39,7 @@ export class FetchClientsUseCase {
     ) {
       return left(new NotAllowedError());
     }
-    
+
     const clients = await this.clientsRepo.findManyBySalesRepID(
       salesRepID,
       page
