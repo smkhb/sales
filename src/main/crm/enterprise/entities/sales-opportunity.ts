@@ -95,16 +95,12 @@ export class SalesOpportunity extends AggregateRoot<SalesOpportunityProps> {
   }
 
   static create(
-    props: Optional<
-      SalesOpportunityProps,
-      "creatorID" | "status" | "createdAt"
-    >,
+    props: Optional<SalesOpportunityProps, "status" | "createdAt">,
     id?: UniqueEntityID
   ) {
     const salesOpportunity = new SalesOpportunity(
       {
         ...props,
-        creatorID: props.creatorID ?? props.salesRepID,
         status: props.status ?? OpportunityStatus.open,
         createdAt: props.createdAt ?? new Date(),
       },

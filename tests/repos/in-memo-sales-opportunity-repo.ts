@@ -14,7 +14,7 @@ export class InMemoSalesOpportunitiesRepo implements SalesOpportunitiesRepo {
     );
 
     if (salesopportunityIndex < 0) {
-      throw new Error("salesopportunity not found");
+      throw new Error("sales opportunity not found");
     }
 
     this.items[salesopportunityIndex] = salesopportunity;
@@ -41,8 +41,8 @@ export class InMemoSalesOpportunitiesRepo implements SalesOpportunitiesRepo {
   }
 
   async findMany(page: number) {
-    const clients = this.items.slice((page - 1) * 20, page * 20); // assuming 20 items per page
+    const salesopportunities = this.items.slice((page - 1) * 20, page * 20); // assuming 20 items per page
 
-    return clients;
+    return salesopportunities;
   }
 }

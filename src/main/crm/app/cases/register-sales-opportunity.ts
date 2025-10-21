@@ -58,6 +58,7 @@ export class RegisterSalesOpportunityUseCase {
     }
 
     const salesOpportunity = SalesOpportunity.create({
+      creatorID: executor.id,
       clientID: client.id,
       salesRepID: new UniqueEntityID(salesRepID),
       title,
