@@ -1,51 +1,43 @@
-import { SalespersonsRepo } from "@/main/crm/app/repos/salespersons-repo";
-import { Salesperson } from "@/main/crm/enterprise/entities/salesperson";
+import { SalesOpportunitiesRepo } from "@/main/crm/app/repos/salesOpportunities-repo";
+import { SalesOpportunity } from "@/main/crm/enterprise/entities/sales-opportunity";
 
-export class InMemoSalespersonsRepo implements SalespersonsRepo {
-  public items: Salesperson[] = [];
+export class InMemoSalesOpportunitiesRepo implements SalesOpportunitiesRepo {
+  public items: SalesOpportunity[] = [];
 
-  async create(salesperson: Salesperson) {
-    this.items.push(salesperson);
+  async create(salesopportunity: SalesOpportunity) {
+    this.items.push(salesopportunity);
   }
 
-  async save(salesperson: Salesperson) {
-    const salespersonIndex = this.items.findIndex((item) =>
-      item.id.equals(salesperson.id)
+  async save(salesopportunity: SalesOpportunity) {
+    const salesopportunityIndex = this.items.findIndex((item) =>
+      item.id.equals(salesopportunity.id)
     );
 
-    if (salespersonIndex < 0) {
-      throw new Error("salesperson not found"); // TODO: create a specific error
+    if (salesopportunityIndex < 0) {
+      throw new Error("salesopportunity not found");
     }
 
-    this.items[salespersonIndex] = salesperson;
+    this.items[salesopportunityIndex] = salesopportunity;
   }
 
-  async delete(salesperson: Salesperson) {
-    const salespersonIndex = this.items.findIndex((item) =>
-      item.id.equals(salesperson.id)
+  async delete(salesopportunity: SalesOpportunity) {
+    const salesopportunityIndex = this.items.findIndex((item) =>
+      item.id.equals(salesopportunity.id)
     );
 
-    this.items.splice(salespersonIndex, 1);
+    this.items.splice(salesopportunityIndex, 1);
   }
 
   async findByID(id: string) {
-    const salesperson = this.items.find((item) => item.id.toString() === id);
+    const salesopportunity = this.items.find(
+      (item) => item.id.toString() === id
+    );
 
-    if (!salesperson) {
+    if (!salesopportunity) {
       return null;
     }
 
-    return salesperson;
-  }
-
-  async findByEmail(email: string) {
-    const salesperson = this.items.find((item) => item.email === email);
-
-    if (!salesperson) {
-      return null;
-    }
-
-    return salesperson;
+    return salesopportunity;
   }
 
   async findMany(page: number) {
