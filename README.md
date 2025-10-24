@@ -36,9 +36,9 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [x] Todo cliente deve ter um vendedor associado.
 
-[ ] O primeiro vendedor associado do Cliente deve ser o vendedor que o criou.
+[x] O primeiro vendedor associado do Cliente deve ser o vendedor que o criou.
 
-[ ] Toda oportunidade de venda deve estar associada a um cliente e a um vendedor.
+[x] Toda oportunidade de venda deve estar associada a um cliente e a um vendedor.
 
 [ ] O vendedor que cria a oportunidade de venda é o seu primeiro responsável.
 
