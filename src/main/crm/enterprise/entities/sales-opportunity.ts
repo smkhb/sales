@@ -3,6 +3,9 @@ import { SalesOpportunityStatus as OpportunityStatus } from "./enum/salesOpportu
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { Optional } from "@/core/types/optional";
 import { SalesOpportunityCreatedEvent } from "../events/salesOpportunity-created-event";
+import { SalesOpportunityWrongStatusError } from "./errors/sales-opportunity-wrong-status-error";
+import { SalesOpportunityPhotoURLRequiredError } from "./errors/sales-opportunity-photo-required-error";
+import { Either, left, right } from "@/core/either";
 
 export interface SalesOpportunityProps {
   creatorID: UniqueEntityID;
@@ -82,16 +85,24 @@ export class SalesOpportunity extends AggregateRoot<SalesOpportunityProps> {
     this.touch();
   }
 
-  public markAsDelivered(photoURL: string) {
-    if (!photoURL) {
-      throw new Error("Photo URL is required to mark as delivered.");
-    }
+  public markAsDelivered(
+    photoURL: string
+  ): Either<
+    SalesOpportunityPhotoURLRequiredError | SalesOpportunityWrongStatusError,
+    true
+  > {
     if (this.props.status !== OpportunityStatus.won) {
-      throw new Error("Only won opportunities can be marked as delivered.");
+      return left(new SalesOpportunityWrongStatusError());
     }
+    if (!photoURL) {
+      return left(new SalesOpportunityPhotoURLRequiredError());
+    }
+
     this.props.status = OpportunityStatus.delivered;
     this.props.deliveryPhotoURL = photoURL;
     this.touch();
+
+    return right(true);
   }
 
   static create(
