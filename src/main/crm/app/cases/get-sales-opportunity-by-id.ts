@@ -14,7 +14,7 @@ interface GetSalesOpportunityByIDUseCaseRequest {
 
 type GetSalesOpportunityByIDUseCaseResponse = Either<
   SalespersonNotFoundError | NotAllowedError | SalesOpportunityNotFoundError,
-  { salesopportunity: SalesOpportunity }
+  { salesOpportunity: SalesOpportunity }
 >;
 
 export class GetSalesOpportunityByIDUseCase {
@@ -33,21 +33,21 @@ export class GetSalesOpportunityByIDUseCase {
       return left(new SalespersonNotFoundError());
     }
 
-    const salesopportunity = await this.salesopportunitysRepo.findByID(
+    const salesOpportunity = await this.salesopportunitysRepo.findByID(
       salesOpportunityID
     );
 
-    if (!salesopportunity) {
+    if (!salesOpportunity) {
       return left(new SalesOpportunityNotFoundError());
     }
 
     if (
       executor.role !== SalespersonRole.manager &&
-      executor.id.toString() !== salesopportunity.salesRepID.toString()
+      executor.id.toString() !== salesOpportunity.salesRepID.toString()
     ) {
       return left(new NotAllowedError());
     }
 
-    return right({ salesopportunity });
+    return right({ salesOpportunity });
   }
 }
