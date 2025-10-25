@@ -7,4 +7,8 @@ export abstract class SalesOpportunitiesRepo {
 
   abstract findByID(id: string): Promise<SalesOpportunity | null>;
   abstract findMany(page: number): Promise<SalesOpportunity[]>;
+  abstract findManyBySalespersonID(
+    id: string,
+    page: number
+  ): Promise<SalesOpportunity[]>;
 }

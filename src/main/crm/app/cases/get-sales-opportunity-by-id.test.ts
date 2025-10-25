@@ -50,7 +50,7 @@ describe("Get SalesOpportunity by ID", () => {
 
     expect(result.isRight()).toBe(true);
     expect(result.value).toMatchObject({
-      salesopportunity: expect.objectContaining({
+      salesOpportunity: expect.objectContaining({
         clientID: client.id,
         salesRepID: salesRep.id,
       }),
@@ -79,7 +79,7 @@ describe("Get SalesOpportunity by ID", () => {
 
     expect(result.isRight()).toBe(true);
     expect(result.value).toMatchObject({
-      salesopportunity: expect.objectContaining({
+      salesOpportunity: expect.objectContaining({
         clientID: client.id,
         salesRepID: salesRep.id,
       }),

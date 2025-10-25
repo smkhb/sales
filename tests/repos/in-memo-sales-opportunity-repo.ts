@@ -41,8 +41,16 @@ export class InMemoSalesOpportunitiesRepo implements SalesOpportunitiesRepo {
   }
 
   async findMany(page: number) {
-    const salesopportunities = this.items.slice((page - 1) * 20, page * 20); // assuming 20 items per page
+    const salesopportunities = this.items.slice((page - 1) * 20, page * 20);
 
     return salesopportunities;
+  }
+
+  async findManyBySalespersonID(id: string, page: number) {
+    const salesopportunity = this.items
+      .filter((item) => item.salesRepID.toString() === id)
+      .slice((page - 1) * 20, page * 20);
+
+    return salesopportunity;
   }
 }
