@@ -6,6 +6,7 @@ import { SalesOpportunityCreatedEvent } from "../events/salesOpportunity-created
 import { SalesOpportunityWrongStatusError } from "./errors/sales-opportunity-wrong-status-error";
 import { SalesOpportunityPhotoURLRequiredError } from "./errors/sales-opportunity-photo-required-error";
 import { Either, left, right } from "@/core/either";
+import { CantMarkSalesOpportunityAsLostError } from "./errors/cant-mark-sales-opportunity-as-lost-error";
 
 export interface SalesOpportunityProps {
   creatorID: UniqueEntityID;
@@ -83,6 +84,22 @@ export class SalesOpportunity extends AggregateRoot<SalesOpportunityProps> {
   public updateStatus(status: OpportunityStatus) {
     this.props.status = status;
     this.touch();
+  }
+
+  public markAsLost(): Either<CantMarkSalesOpportunityAsLostError, true> {
+    if (
+      this.props.status !== OpportunityStatus.inProgress &&
+      this.props.status !== OpportunityStatus.open
+    ) {
+      return left(
+        new CantMarkSalesOpportunityAsLostError(this.props.status.toString())
+      );
+    }
+
+    this.props.status = OpportunityStatus.lost;
+    this.touch();
+
+    return right(true);
   }
 
   public markAsDelivered(

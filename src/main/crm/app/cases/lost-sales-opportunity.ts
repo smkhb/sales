@@ -1,30 +1,26 @@
-import { Either, left, Left, right } from "@/core/either";
+import { Either, left, right } from "@/core/either";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
-import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
-import { SalesOpportunity } from "../../enterprise/entities/sales-opportunity";
 import { SalespersonsRepo } from "../repos/salespersons-repo";
 import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
+import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 import { SalesOpportunitiesRepo } from "../repos/salesOpportunities-repo";
 import { SalesOpportunityNotFoundError } from "./errors/sales-opportunity-not-found-error";
-import { SalesOpportunityPhotoURLRequiredError } from "../../enterprise/entities/errors/sales-opportunity-photo-required-error";
-import { SalesOpportunityWrongStatusError } from "../../enterprise/entities/errors/sales-opportunity-wrong-status-error";
+import { CantMarkSalesOpportunityAsLostError } from "../../enterprise/entities/errors/cant-mark-sales-opportunity-as-lost-error";
 
-interface MarkOpportunityAsDeliveredUseCaseRequest {
+interface LostSalesOpportunityUseCaseRequest {
   executorID: string;
   salesOpportunityID: string;
-  photoURL: string;
 }
 
-type MarkOpportunityAsDeliveredUseCaseResponse = Either<
+type LostSalesOpportunityUseCaseResponse = Either<
   | SalespersonNotFoundError
   | NotAllowedError
   | SalesOpportunityNotFoundError
-  | SalesOpportunityPhotoURLRequiredError
-  | SalesOpportunityWrongStatusError,
-  { salesOpportunity: SalesOpportunity }
+  | CantMarkSalesOpportunityAsLostError,
+  null
 >;
 
-export class MarkOpportunityAsDeliveredUseCase {
+export class LostSalesOpportunityUseCase {
   constructor(
     private salespersonsRepo: SalespersonsRepo,
     private salesOpportunitiesRepo: SalesOpportunitiesRepo
@@ -33,12 +29,11 @@ export class MarkOpportunityAsDeliveredUseCase {
   async execute({
     executorID,
     salesOpportunityID,
-    photoURL,
-  }: MarkOpportunityAsDeliveredUseCaseRequest): Promise<MarkOpportunityAsDeliveredUseCaseResponse> {
+  }: LostSalesOpportunityUseCaseRequest): Promise<LostSalesOpportunityUseCaseResponse> {
     const executor = await this.salespersonsRepo.findByID(executorID);
 
     if (!executor) {
-      return new Left(new SalespersonNotFoundError());
+      return left(new SalespersonNotFoundError());
     }
 
     const salesOpportunity = await this.salesOpportunitiesRepo.findByID(
@@ -56,7 +51,7 @@ export class MarkOpportunityAsDeliveredUseCase {
       return left(new NotAllowedError());
     }
 
-    const result = salesOpportunity.markAsDelivered(photoURL);
+    const result = salesOpportunity.markAsLost();
 
     if (result.isLeft()) {
       return left(result.value);
@@ -64,6 +59,6 @@ export class MarkOpportunityAsDeliveredUseCase {
 
     this.salesOpportunitiesRepo.save(salesOpportunity);
 
-    return right({ salesOpportunity });
+    return right(null);
   }
 }
