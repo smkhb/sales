@@ -9,6 +9,7 @@ import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole"
 import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 import { ClientNotFoundError } from "./errors/client-not-found-error";
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
+import { OnSalesOpportunityCreated } from "../handlers/on-sales-opportunity-created";
 
 let salespersonsRepo: InMemoSalespersonsRepo;
 let clientsRepo: InMemoClientsRepo;
@@ -27,6 +28,7 @@ describe("Register Sales Opportunity", () => {
     );
 
     DomainEvents.clearHandlers();
+    new OnSalesOpportunityCreated();
   });
 
   it("should be able to register a new sales opportunity", async () => {
@@ -152,5 +154,29 @@ describe("Register Sales Opportunity", () => {
 
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+
+  it("should trigger a domain event upon creating a new sales opportunity", async () => {
+    const consoleSpy = vi.spyOn(console, "log");
+    const salesperson = makeSalesperson();
+    salespersonsRepo.items.push(salesperson);
+
+    const client = makeClient({ salesRepID: salesperson.id });
+    clientsRepo.items.push(client);
+
+    const manager = makeSalesperson({ role: SalespersonRole.manager });
+    salespersonsRepo.items.push(manager);
+
+    const result = await sut.execute({
+      executorID: manager.id.toString(),
+      clientID: client.id.toString(),
+      salesRepID: salesperson.id.toString(),
+      title: "New Sales Opportunity",
+      description: "This is a new sales opportunity.",
+      value: 10000,
+    });
+
+    expect(result.isRight()).toBe(true);
+    expect(consoleSpy).toHaveBeenCalled();
   });
 });

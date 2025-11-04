@@ -4,11 +4,11 @@ import { SalesOpportunity } from "../entities/sales-opportunity";
 
 export class SalesOpportunityCreatedEvent implements DomainEvent {
   public ocurredAt: Date;
-  private readonly salesOpportunity: SalesOpportunity;
+  public salesOpportunity: SalesOpportunity;
 
   constructor(salesOpportunity: SalesOpportunity) {
-    this.ocurredAt = new Date();
     this.salesOpportunity = salesOpportunity;
+    this.ocurredAt = new Date();
   }
 
   getAggregateID(): UniqueEntityID {

@@ -8,6 +8,7 @@ import { ClientsRepo } from "../repos/clients-repo";
 import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { SalesOpportunitiesRepo } from "../repos/salesOpportunities-repo";
+import { DomainEvents } from "@/core/events/domain-events";
 
 interface RegisterSalesOpportunityUseCaseRequest {
   executorID: string;
@@ -67,6 +68,7 @@ export class RegisterSalesOpportunityUseCase {
     });
 
     this.salesOpportunitiesRepo.create(salesOpportunity);
+    DomainEvents.dispatchEventsForAggregate(salesOpportunity.id);
 
     return right({ salesOpportunity });
   }
