@@ -2,11 +2,17 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { SalesOpportunityStatus as OpportunityStatus } from "./enum/salesOpportunityStatus";
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { Optional } from "@/core/types/optional";
-import { SalesOpportunityCreatedEvent } from "../events/salesOpportunity-created-event";
+import { SalesOpportunityCreatedEvent } from "../events/sales-opportunity-created-event";
 import { SalesOpportunityWrongStatusError } from "./errors/sales-opportunity-wrong-status-error";
 import { SalesOpportunityPhotoURLRequiredError } from "./errors/sales-opportunity-photo-required-error";
 import { Either, left, right } from "@/core/either";
 import { CantMarkSalesOpportunityAsLostError } from "./errors/cant-mark-sales-opportunity-as-lost-error";
+import {
+  SalesOpportunityHighValueEvent
+} from "../events/sales-opportunity-high-value-event";
+import { SalesOpportunityStatusUpdatedEvent } from "../events/sales-opportunity-status-updated-event";
+import { SalesOpportunityLostEvent } from "../events/sales-opportunity-lost-event";
+import { SalesOpportunityDeliveredEvent } from "../events/sales-opportunity-delivered-event";
 
 export interface SalesOpportunityProps {
   creatorID: UniqueEntityID;
@@ -77,6 +83,9 @@ export class SalesOpportunity extends AggregateRoot<SalesOpportunityProps> {
   }
 
   public updateValue(value: number) {
+    if (value !== this.props.value && value >= 10000) {
+      this.addDomainEvent(new SalesOpportunityHighValueEvent(this));
+    }
     this.props.value = value;
     this.touch();
   }
@@ -84,6 +93,8 @@ export class SalesOpportunity extends AggregateRoot<SalesOpportunityProps> {
   public updateStatus(status: OpportunityStatus) {
     this.props.status = status;
     this.touch();
+
+    this.addDomainEvent(new SalesOpportunityStatusUpdatedEvent(this));
   }
 
   public markAsLost(): Either<CantMarkSalesOpportunityAsLostError, true> {
@@ -98,6 +109,8 @@ export class SalesOpportunity extends AggregateRoot<SalesOpportunityProps> {
 
     this.props.status = OpportunityStatus.lost;
     this.touch();
+
+    this.addDomainEvent(new SalesOpportunityLostEvent(this));
 
     return right(true);
   }
@@ -118,6 +131,8 @@ export class SalesOpportunity extends AggregateRoot<SalesOpportunityProps> {
     this.props.status = OpportunityStatus.delivered;
     this.props.deliveryPhotoURL = photoURL;
     this.touch();
+
+    this.addDomainEvent(new SalesOpportunityDeliveredEvent(this));
 
     return right(true);
   }

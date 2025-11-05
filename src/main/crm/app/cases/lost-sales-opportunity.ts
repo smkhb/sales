@@ -6,6 +6,7 @@ import { SalespersonNotFoundError } from "./errors/salesperson-not-found-error";
 import { SalesOpportunitiesRepo } from "../repos/salesOpportunities-repo";
 import { SalesOpportunityNotFoundError } from "./errors/sales-opportunity-not-found-error";
 import { CantMarkSalesOpportunityAsLostError } from "../../enterprise/entities/errors/cant-mark-sales-opportunity-as-lost-error";
+import { DomainEvents } from "@/core/events/domain-events";
 
 interface LostSalesOpportunityUseCaseRequest {
   executorID: string;
@@ -52,6 +53,7 @@ export class LostSalesOpportunityUseCase {
     }
 
     const result = salesOpportunity.markAsLost();
+    DomainEvents.dispatchEventsForAggregate(salesOpportunity.id);
 
     if (result.isLeft()) {
       return left(result.value);

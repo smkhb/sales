@@ -8,6 +8,7 @@ import { SalesOpportunitiesRepo } from "../repos/salesOpportunities-repo";
 import { SalesOpportunityNotFoundError } from "./errors/sales-opportunity-not-found-error";
 import { SalesOpportunityPhotoURLRequiredError } from "../../enterprise/entities/errors/sales-opportunity-photo-required-error";
 import { SalesOpportunityWrongStatusError } from "../../enterprise/entities/errors/sales-opportunity-wrong-status-error";
+import { DomainEvents } from "@/core/events/domain-events";
 
 interface MarkOpportunityAsDeliveredUseCaseRequest {
   executorID: string;
@@ -57,6 +58,7 @@ export class MarkOpportunityAsDeliveredUseCase {
     }
 
     const result = salesOpportunity.markAsDelivered(photoURL);
+    DomainEvents.dispatchEventsForAggregate(salesOpportunity.id);
 
     if (result.isLeft()) {
       return left(result.value);

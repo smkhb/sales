@@ -7,6 +7,7 @@ import { SalespersonRole } from "../../enterprise/entities/enum/salespersonRole"
 import { SalesOpportunitiesRepo } from "../repos/salesOpportunities-repo";
 import { SalesOpportunityNotFoundError } from "./errors/sales-opportunity-not-found-error";
 import { SalesOpportunityStatus } from "../../enterprise/entities/enum/salesOpportunityStatus";
+import { DomainEvents } from "@/core/events/domain-events";
 
 interface UpdateSalesOpportunityUseCaseRequest {
   executorID: string;
@@ -61,6 +62,9 @@ export class UpdateSalesOpportunityUseCase {
     salesOpportunity.updateTitle(title);
     salesOpportunity.updateDescription(description);
     salesOpportunity.updateValue(value);
+    if (value >= 10000) {
+      DomainEvents.dispatchEventsForAggregate(salesOpportunity.id);
+    }
     salesOpportunity.updateStatus(status);
 
     this.salesOpportunitiesRepo.save(salesOpportunity);

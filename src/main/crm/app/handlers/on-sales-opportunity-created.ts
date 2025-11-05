@@ -1,6 +1,6 @@
 import { EventHandler } from "@/core/events/event-handler";
 import { DomainEvents } from "@/core/events/domain-events";
-import { SalesOpportunityCreatedEvent } from "@/main/crm/enterprise/events/salesOpportunity-created-event";
+import { SalesOpportunityCreatedEvent } from "@/main/crm/enterprise/events/sales-opportunity-created-event";
 
 export class OnSalesOpportunityCreated implements EventHandler {
   constructor() {
