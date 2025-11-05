@@ -20,7 +20,7 @@ export class OnSalesOpportunityStatusUpdated implements EventHandler {
     console.log(
       `
       ===============================================
-      ALERTA DE OPORTUNIDADE ENTREGUE!
+      ALERTA DE MUDANÇA DE STATUS NA OPORTUNIDADE!
       Oportunidade: ${salesOpportunity.title}
       Valor: ${salesOpportunity.value}
       Novo Status: ${salesOpportunity.status}
