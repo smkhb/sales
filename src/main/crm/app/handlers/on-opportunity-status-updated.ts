@@ -1,6 +1,6 @@
 import { EventHandler } from "@/core/events/event-handler";
 import { DomainEvents } from "@/core/events/domain-events";
-import { SalesOpportunityDeliveredEvent } from "../../enterprise/events/sales-opportunity-delivered-event";
+import { SalesOpportunityStatusUpdatedEvent } from "../../enterprise/events/sales-opportunity-status-updated-event";
 
 export class OnSalesOpportunityStatusUpdated implements EventHandler {
   constructor() {
@@ -10,13 +10,13 @@ export class OnSalesOpportunityStatusUpdated implements EventHandler {
   setupSubscriptions() {
     DomainEvents.register(
       this.DeliveredSalesOpportunityUpdatedNotification.bind(this),
-      SalesOpportunityDeliveredEvent.name
+      SalesOpportunityStatusUpdatedEvent.name
     );
   }
 
   private async DeliveredSalesOpportunityUpdatedNotification({
     salesOpportunity,
-  }: SalesOpportunityDeliveredEvent) {
+  }: SalesOpportunityStatusUpdatedEvent) {
     console.log(
       `
       ===============================================

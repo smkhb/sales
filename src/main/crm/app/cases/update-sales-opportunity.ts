@@ -62,12 +62,10 @@ export class UpdateSalesOpportunityUseCase {
     salesOpportunity.updateTitle(title);
     salesOpportunity.updateDescription(description);
     salesOpportunity.updateValue(value);
-    if (value >= 10000) {
-      DomainEvents.dispatchEventsForAggregate(salesOpportunity.id);
-    }
     salesOpportunity.updateStatus(status);
 
     this.salesOpportunitiesRepo.save(salesOpportunity);
+    DomainEvents.dispatchEventsForAggregate(salesOpportunity.id);
 
     return right({ salesOpportunity });
   }

@@ -7,9 +7,7 @@ import { SalesOpportunityWrongStatusError } from "./errors/sales-opportunity-wro
 import { SalesOpportunityPhotoURLRequiredError } from "./errors/sales-opportunity-photo-required-error";
 import { Either, left, right } from "@/core/either";
 import { CantMarkSalesOpportunityAsLostError } from "./errors/cant-mark-sales-opportunity-as-lost-error";
-import {
-  SalesOpportunityHighValueEvent
-} from "../events/sales-opportunity-high-value-event";
+import { SalesOpportunityHighValueEvent } from "../events/sales-opportunity-high-value-event";
 import { SalesOpportunityStatusUpdatedEvent } from "../events/sales-opportunity-status-updated-event";
 import { SalesOpportunityLostEvent } from "../events/sales-opportunity-lost-event";
 import { SalesOpportunityDeliveredEvent } from "../events/sales-opportunity-delivered-event";
@@ -91,10 +89,11 @@ export class SalesOpportunity extends AggregateRoot<SalesOpportunityProps> {
   }
 
   public updateStatus(status: OpportunityStatus) {
+    if (status !== this.props.status) {
+      this.addDomainEvent(new SalesOpportunityStatusUpdatedEvent(this));
+    }
     this.props.status = status;
     this.touch();
-
-    this.addDomainEvent(new SalesOpportunityStatusUpdatedEvent(this));
   }
 
   public markAsLost(): Either<CantMarkSalesOpportunityAsLostError, true> {
