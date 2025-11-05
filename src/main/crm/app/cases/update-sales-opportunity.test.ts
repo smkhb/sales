@@ -11,6 +11,8 @@ import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { makeSalesOpportunity } from "tests/factories/make-sales-opportunity";
 import { SalesOpportunityStatus } from "../../enterprise/entities/enum/salesOpportunityStatus";
 import { SalesOpportunityNotFoundError } from "./errors/sales-opportunity-not-found-error";
+import { OnHighValueSalesOpportunityUpdated } from "../handlers/on-high-value-sales-opportunity-updated";
+import { OnSalesOpportunityStatusUpdated } from "../handlers/on-opportunity-status-updated";
 
 let salespersonsRepo: InMemoSalespersonsRepo;
 let clientsRepo: InMemoClientsRepo;
@@ -28,6 +30,8 @@ describe("Update Sales Opportunity", () => {
     );
 
     DomainEvents.clearHandlers();
+    new OnHighValueSalesOpportunityUpdated();
+    new OnSalesOpportunityStatusUpdated();
   });
 
   it("should be able to update a sales opportunity", async () => {
@@ -172,5 +176,91 @@ describe("Update Sales Opportunity", () => {
 
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(NotAllowedError);
+  });
+
+  it("should trigger a domain event upon updating status from a sales opportunity", async () => {
+    const consoleSpy = vi.spyOn(console, "log");
+
+    const salesperson = makeSalesperson();
+    salespersonsRepo.items.push(salesperson);
+
+    const client = makeClient({ salesRepID: salesperson.id });
+    clientsRepo.items.push(client);
+
+    const salesOpportunity = makeSalesOpportunity({
+      clientID: client.id,
+      salesRepID: salesperson.id,
+    });
+    salesOpportunitiesRepo.items.push(salesOpportunity);
+
+    const result = await sut.execute({
+      executorID: salesperson.id.toString(),
+      salesOpportunityID: salesOpportunity.id.toString(),
+      title: "Updated Sales Opportunity",
+      description: "This is an updated sales opportunity.",
+      value: 5000,
+      status: SalesOpportunityStatus.inProgress,
+    });
+
+    expect(result.isRight()).toBe(true);
+    expect(consoleSpy).toHaveBeenCalled();
+  });
+
+  it("should trigger a domain event upon updating a opportunity to a high value", async () => {
+    const consoleSpy = vi.spyOn(console, "log");
+
+    const salesperson = makeSalesperson();
+    salespersonsRepo.items.push(salesperson);
+
+    const client = makeClient({ salesRepID: salesperson.id });
+    clientsRepo.items.push(client);
+
+    const salesOpportunity = makeSalesOpportunity({
+      clientID: client.id,
+      salesRepID: salesperson.id,
+      value: 100,
+    });
+    salesOpportunitiesRepo.items.push(salesOpportunity);
+
+    const result = await sut.execute({
+      executorID: salesperson.id.toString(),
+      salesOpportunityID: salesOpportunity.id.toString(),
+      title: "Updated Sales Opportunity",
+      description: "This is an updated sales opportunity.",
+      value: 10000,
+      status: salesOpportunity.status,
+    });
+
+    expect(result.isRight()).toBe(true);
+    expect(consoleSpy).toHaveBeenCalled();
+  });
+
+  it.only("should trigger a domain event upon updating status and high value from a sales opportunity", async () => {
+    const consoleSpy = vi.spyOn(console, "log");
+
+    const salesperson = makeSalesperson();
+    salespersonsRepo.items.push(salesperson);
+
+    const client = makeClient({ salesRepID: salesperson.id });
+    clientsRepo.items.push(client);
+
+    const salesOpportunity = makeSalesOpportunity({
+      clientID: client.id,
+      salesRepID: salesperson.id,
+      value: 400,
+    });
+    salesOpportunitiesRepo.items.push(salesOpportunity);
+
+    const result = await sut.execute({
+      executorID: salesperson.id.toString(),
+      salesOpportunityID: salesOpportunity.id.toString(),
+      title: "Updated Sales Opportunity",
+      description: "This is an updated sales opportunity.",
+      value: 10000,
+      status: SalesOpportunityStatus.inProgress,
+    });
+
+    expect(result.isRight()).toBe(true);
+    expect(consoleSpy).toHaveBeenCalled();
   });
 });
