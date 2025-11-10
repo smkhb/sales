@@ -12,6 +12,7 @@ import { SalesOpportunityStatus } from "../../enterprise/entities/enum/salesOppo
 import { SalesOpportunityNotFoundError } from "./errors/sales-opportunity-not-found-error";
 import { LostSalesOpportunityUseCase } from "./lost-sales-opportunity";
 import { CantMarkSalesOpportunityAsLostError } from "../../enterprise/entities/errors/cant-mark-sales-opportunity-as-lost-error";
+import { OnLostSalesOpportunityUpdated } from "../handlers/on-lost-sales-opportunity";
 
 let salespersonsRepo: InMemoSalespersonsRepo;
 let clientsRepo: InMemoClientsRepo;
@@ -29,6 +30,8 @@ describe("Lost Sales Opportunity", () => {
     );
 
     DomainEvents.clearHandlers();
+
+    new OnLostSalesOpportunityUpdated();
   });
 
   it("should be able to lost an opportunity", async () => {
@@ -196,5 +199,29 @@ describe("Lost Sales Opportunity", () => {
     });
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(CantMarkSalesOpportunityAsLostError);
+  });
+
+  it.only("should trigger a domain event upon losting a sales opportunity", async () => {
+    const consoleSpy = vi.spyOn(console, "log");
+    const salesperson = makeSalesperson();
+    salespersonsRepo.items.push(salesperson);
+
+    const client = makeClient({ salesRepID: salesperson.id });
+    clientsRepo.items.push(client);
+
+    const salesOpportunity = makeSalesOpportunity({
+      clientID: client.id,
+      salesRepID: salesperson.id,
+      status: SalesOpportunityStatus.open,
+    });
+    salesOpportunitiesRepo.items.push(salesOpportunity);
+
+    const result = await sut.execute({
+      executorID: salesperson.id.toString(),
+      salesOpportunityID: salesOpportunity.id.toString(),
+    });
+
+    expect(result.isRight()).toBe(true);
+    expect(consoleSpy).toHaveBeenCalled();
   });
 });

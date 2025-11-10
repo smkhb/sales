@@ -8,19 +8,17 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [x] Deve ser possível realizar login com e-mail e senha.
 
-[x] Deve ser possível realizar o CRUD dos vendedores (acessível apenas por gerentes).
+[ ] Deve ser possível realizar o CRUD dos vendedores (acessível apenas por gerentes).
 
 [x] Deve ser possível realizar o CRUD dos clientes.
 
-[ ] Deve ser possível realizar o CRUD das oportunidades de vendas.
+[x] Deve ser possível realizar o CRUD das oportunidades de vendas.
 
-[ ] Deve ser possível listar as vendas com endereços de entrega próximo ao local do vendedor.
+[x] Deve ser possível alterar a senha de um usuário (somente gerentes podem alterar as senhas dos vendedores).
 
-[ ] Deve ser possível alterar a senha de um usuário (somente gerentes podem alterar as senhas dos vendedores).
+[x] Deve ser possível listar as vendas de um usuário (vendedor).
 
-[ ] Deve ser possível listar as vendas de um usuário (vendedor).
-
-[ ] Deve ser possível notificar o gerente a cada alteração no status de uma venda de alto valor.
+[x] Deve ser possível notificar o gerente a cada alteração no status de uma venda de alto valor.
 
 ## 📑 Regras de negócio
 
@@ -28,11 +26,11 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [x] Somente o vendedor que está logado pode gerenciar seus próprios clientes.
 
-[ ] Para marcar uma oportunidade de venda como entregue, é obrigatório o envio de uma foto.
+[x] Para marcar uma oportunidade de venda como entregue, é obrigatório o envio de uma foto.
 
 [x] Somente o gerente pode alterar a senha de um vendedor.
 
-[ ] Não deve ser possível um vendedor listar as vendas de outro vendedor.
+[x] Não deve ser possível um vendedor listar as vendas de outro vendedor.
 
 [x] Todo cliente deve ter um vendedor associado.
 
@@ -40,7 +38,7 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [x] Toda oportunidade de venda deve estar associada a um cliente e a um vendedor.
 
-[ ] O vendedor que cria a oportunidade de venda é o seu primeiro responsável.
+[x] O vendedor que cria a oportunidade de venda é o seu primeiro responsável.
 
 ## ✏️ Conceitos que pode praticar
 

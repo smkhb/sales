@@ -13,6 +13,7 @@ import { SalesOpportunityNotFoundError } from "./errors/sales-opportunity-not-fo
 import { MarkOpportunityAsDeliveredUseCase } from "./mark-opportunity-as-delivered";
 import { SalesOpportunityWrongStatusError } from "../../enterprise/entities/errors/sales-opportunity-wrong-status-error";
 import { SalesOpportunityPhotoURLRequiredError } from "../../enterprise/entities/errors/sales-opportunity-photo-required-error";
+import { OnDeliveredSalesOpportunityUpdated } from "../handlers/on-delivered-sales-opportunity";
 
 let salespersonsRepo: InMemoSalespersonsRepo;
 let clientsRepo: InMemoClientsRepo;
@@ -30,6 +31,7 @@ describe("Mark Opportunity as Delivered", () => {
     );
 
     DomainEvents.clearHandlers();
+    new OnDeliveredSalesOpportunityUpdated();
   });
 
   it("should be able to mark an opportunity as deliverd", async () => {
@@ -204,5 +206,30 @@ describe("Mark Opportunity as Delivered", () => {
     });
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(SalesOpportunityPhotoURLRequiredError);
+  });
+
+  it.only("should trigger a domain event upon delivering a sales opportunity", async () => {
+    const consoleSpy = vi.spyOn(console, "log");
+    const salesperson = makeSalesperson();
+    salespersonsRepo.items.push(salesperson);
+
+    const client = makeClient({ salesRepID: salesperson.id });
+    clientsRepo.items.push(client);
+
+    const salesOpportunity = makeSalesOpportunity({
+      clientID: client.id,
+      salesRepID: salesperson.id,
+      status: SalesOpportunityStatus.won,
+    });
+    salesOpportunitiesRepo.items.push(salesOpportunity);
+
+    const result = await sut.execute({
+      executorID: salesperson.id.toString(),
+      salesOpportunityID: salesOpportunity.id.toString(),
+      photoURL: "http://example.com/delivery-photo.jpg",
+    });
+
+    expect(result.isRight()).toBe(true);
+    expect(consoleSpy).toHaveBeenCalled();
   });
 });
