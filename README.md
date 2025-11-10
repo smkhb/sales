@@ -8,7 +8,7 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 [x] Deve ser possível realizar login com e-mail e senha.
 
-[ ] Deve ser possível realizar o CRUD dos vendedores (acessível apenas por gerentes).
+[x] Deve ser possível realizar o CRUD dos vendedores (acessível apenas por gerentes).
 
 [x] Deve ser possível realizar o CRUD dos clientes.
 
@@ -44,20 +44,14 @@ Este documento descreve o projeto de uma API REST para um CRM (Customer Relation
 
 - DDD, Domain Events, Clean Architecture
 
-- Autenticação e Autorização (RBAC)
-
-- Testes unitários e e2e
-
-- Integração com serviços externos
+- Testes unitários
 
 ## 🏛️ Arquitetura da Solução
 
-A API é construída com Node.js e Nest.js, seguindo a Clean Architecture e o Domain-Driven Design.
+A base da API é construída seguindo a Clean Architecture e o Domain-Driven Design.
 
 Camada core: Contém os blocos de construção fundamentais e genéricos, como Entity, AggregateRoot e os padrões Either e DomainEvents.
 
 Camada domain: O coração do projeto. É onde residem as regras de negócio puras, entidades (Client, Salesperson), casos de uso (RegisterClientUseCase) e repositórios (interfaces).
 
-Camada infra: A camada de infraestrutura, responsável por implementar a persistência de dados (usando Prisma), a comunicação HTTP (controllers) e os serviços externos.
-
-Testes: Uma pasta dedicada a testes unitários e e2e para garantir a integridade do sistema.
+Testes: Uma pasta dedicada a testes unitários para garantir a integridade dos casos de uso.
